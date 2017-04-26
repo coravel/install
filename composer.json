@@ -1,0 +1,17 @@
+{
+    "name": "coravel/install",
+    "description": "Coravel project installer",
+    "type": "script",
+    "license": "WTFPL",
+    "author": "github.com/etconsilium",
+    "homepage": "http://coravel.github.io",
+    "keywords": [ "ecommerce", "eshop", "coravel", "cms", "framework", "laravel" ],
+    "require": {
+        "php": ">7"
+    },
+    "scripts": {
+        "pre-update-cmd": [
+            "php -f install"
+        ]
+    }
+}

@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+define ('COMPOSER', './composer.json');
+define ('LOCKFILE', './coravel.lock');
+
+if (file_exists(LOCKFILE))  die (0);    //  'что-то пошло не так'.PHP_EOL);
+
+file_put_contents(LOCKFILE, 'coravel install');
+
+passthru('composer require laravel/installer');
+passthru('php -f ./vendor/bin/laravel new --');
+passthru('composer require tcg/voyager');
+passthru('composer require --dev orangehill/iseed');
+passthru('composer require --dev xethron/migrations-generator');
+passthru('composer require coravel/coravel');
+//intervention/imagecache + php-ext-imagic
+chmod('./artisan', 0755);
+//passthru('php -f artisan migrate --seed');
+
+$composer = [];
+file_exists(COMPOSER) && $composer = json_decode(file_get_contents(COMPOSER), true, 512, JSON_OBJECT_AS_ARRAY | JSON_BIGINT_AS_STRING);
+
+$composer_options = [
+    'name'=> 'coravel/coravel',
+    'description'=> 'Caravella de Comerciale',
+    'author'=> 'github.com/etconsilium',
+    'homepage'=> 'http://coravel.github.io',
+    'keywords'=> [ 'ecommerce', 'eshop', 'coravel', 'cms', 'framework', 'laravel' ],
+    'license'=> 'BSDLv2',
+    'copyrights'=> '(cc-by-sh)',
+    'require'=> [
+        'php'=> '>7',
+    ],
+];
+$composer = array_replace_recursive($composer, ['keywords'=>[]], $composer_options);
+
+file_put_contents( COMPOSER, json_encode(
+        $composer
+        , JSON_PRETTY_PRINT |  JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS  )
+);
